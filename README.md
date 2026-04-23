@@ -1,1 +1,2 @@
-# test_php
+# PHP to Smarty
+## Launch instructions

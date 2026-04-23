@@ -1,0 +1,12 @@
+{ 
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "Controllers/",
+            "Loader\\": "./"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "smarty/smarty": "^5.8"
+    }
+}
