@@ -5,18 +5,21 @@ use PDO;
 
 class BaseSql
 {
-    public PDO $pdo;
+    protected static PDO $pdo;
 
-    public function __construct()
+    public static function connect()
     {
-        $dsn = 'mysql:host=db;port=3306;dbname=' . getenv('MYSQL_DATABASE'); 
-        $username = getenv('MYSQL_USER');
-        $password = getenv('MYSQL_PASSWORD');
-        try {
-            $this->pdo = new \Pdo($dsn, $username, $password);
-        } catch (\PDOException $e) {
-            echo 'Connection failed: ' . $e->getMessage();
-            exit;
+        if (!isset(self::$pdo)) {
+            $dsn = 'mysql:host=db;port=3306;dbname=' . getenv('MYSQL_DATABASE'); 
+            $username = getenv('MYSQL_USER');
+            $password = getenv('MYSQL_PASSWORD');
+            try {
+                self::$pdo = new \Pdo($dsn, $username, $password);
+            } catch (\PDOException $e) {
+                echo 'Connection failed: ' . $e->getMessage();
+                exit;
+            }
         }
     }
+
 }

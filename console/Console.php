@@ -1,22 +1,21 @@
 <?php
 namespace Console;
-
+require_once __DIR__ . '/../vendor/autoload.php'; 
 use Database\BaseSql;
 
-class Console
+class Console extends BaseSql
 {
     const COUNT_DATA = 20;
-    private $db;
-
+    
     public function __construct()
     {
-       $this->db = new BaseSql();
+        parent::connect();
     }
 
     private function createCategorys()
     {
         $sql = "INSERT INTO category (title, description) VALUES (:title, :description)";
-        $stmt = $this->db->pdo->prepare($sql);
+        $stmt = self::$pdo->prepare($sql);
         for($i = 0; $i < self::COUNT_DATA; $i++) {
             $stmt->execute([
                 ':title' => "Category " . $i,
@@ -28,7 +27,7 @@ class Console
     private function createArticles()
     {
         $sql = "INSERT INTO article (title, description, image, details) VALUES (:title, :description, :image, :details)";
-        $stmt = $this->db->pdo->prepare($sql);
+        $stmt = self::$pdo->prepare($sql);
         for($i = 0; $i < self::COUNT_DATA; $i++) {
             $stmt->execute([
                 ':title' => "Article " . $i,
@@ -42,7 +41,7 @@ class Console
     private function createArticleCategorys()
     {
         $sql = "INSERT INTO article_category (category_id, article_id) VALUES (:category_id, :article_id)";
-        $stmt = $this->db->pdo->prepare($sql);
+        $stmt = self::$pdo->prepare($sql);
         for($i = 0; $i < self::COUNT_DATA; $i++) {
             $stmt->execute([
                 ':category_id' => rand(1, self::COUNT_DATA),
@@ -54,13 +53,13 @@ class Console
     public function testData()
     {
         try {
-            $this->db->pdo->beginTransaction();
+            self::$pdo->beginTransaction();
             $this->createCategorys();
             $this->createArticles();
             $this->createArticleCategorys();
-            $this->db->pdo->commit();
+            self::$pdo->commit();
         } catch (\Exception $e) {
-            $this->db->pdo->rollBack();
+            self::$pdo->rollBack();
             echo "Error: " . $e->getMessage() . "\n";
         }
     }
@@ -68,11 +67,11 @@ class Console
     public function createTables()
     {
         $sql = file_get_contents(__DIR__ . '/../create_database.sql');     
-        $this->db->pdo->exec($sql);
+        self::$pdo->exec($sql);
     }
 }
 
-require_once __DIR__ . '/../vendor/autoload.php'; 
+
 if ($argc > 1) {
     $command = $argv[1];
     $console = new Console();

@@ -1,21 +1,22 @@
 <?php
 namespace Controllers;
-
+use Database\Category;
+use Database\Article;   
 class IndexController extends BaseController
 {
     public function indexAction()
     {
-        $this->view('index');
+        $this->view('index', ['categories' => Category::getCategories()]);
+    }
+    
+    public function categoryAction(int $id)
+    {
+        $this->view('category', ['category' => Category::getCategoryById($id)]);
     }
 
-    public function categoryAction()
+    public function articleAction(int $id)
     {
-        $this->view('index');
-    }
-
-    public function articleAction()
-    {
-        $this->view('index');
+        $this->view('article', ['article' => Article::getArticleById($id)]);
     }
 
     public function ErrorAction()
