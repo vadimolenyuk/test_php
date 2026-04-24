@@ -25,10 +25,11 @@ class Loader
 
         if (method_exists($controller, $this->route . 'Action')) {
             $method = $this->route . 'Action';
-            $controller->$method();
         } else {
-            echo "404 Not Found";
+            $method ='ErrorAction';
         }
+        
+        $controller->$method();
     }
 
     public function run() {

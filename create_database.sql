@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS category (
+    id INTEGER PRIMARY KEY,
+    title VARCHAR(64) NOT NULL,
+    description TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS article (
+    id INTEGER PRIMARY KEY,
+    title VARCHAR(64) NOT NULL,
+    description TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    image VARCHAR(255) NULL,
+    counter_show INTEGER DEFAULT 0,
+    details TEXT NULL
+);
+
+CREATE TABLE IF NOT EXISTS article_category (
+    article_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (article_id, category_id),
+    FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
+);

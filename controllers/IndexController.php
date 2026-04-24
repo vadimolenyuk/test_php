@@ -13,4 +13,9 @@ class IndexController extends BaseController
         $this->view('index');
     }
 
+    public function ErrorAction()
+    {
+        $this->view('404');
+    }
+
 }

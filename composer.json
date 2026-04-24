@@ -1,8 +1,10 @@
 { 
     "autoload": {
         "psr-4": {
-            "Controllers\\": "Controllers/",
-            "Loader\\": "./"
+            "Controllers\\": "controllers/",
+            "Loader\\": "./",
+            "Database\\": "database/",
+            "Console\\": "console/"
         }
     },
     "require": {
