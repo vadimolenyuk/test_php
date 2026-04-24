@@ -1,6 +1,10 @@
-<div>
-    {$article->title}
-    {$article->description}
-    <img src="{$article->image}" alt="{$article->title}" width="100" height="100">
-    {$article->details}
-</div>
+<div class="content">
+    <h2>{$article->title}</h2>
+    <div class="article-description"><h4>Description:</h4>
+        <p>{$article->description}</p>
+    
+        <p>{$article->details}</p>
+    </div>
+    <div class="article-image">
+        <img src="/images/{$article->image}" alt="{$article->title}" width="300" height="300"> 
+    </div>

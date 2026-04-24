@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-   
+   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     {include file="./header.tpl"}

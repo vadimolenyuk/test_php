@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "watch": "sass --watch scss:../web",
+    "build": "sass scss:../web --style compressed"
+  }
+}
