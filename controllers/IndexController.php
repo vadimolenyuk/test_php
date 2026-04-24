@@ -8,7 +8,12 @@ class IndexController extends BaseController
         $this->view('index');
     }
 
-    public function pageAction()
+    public function categoryAction()
+    {
+        $this->view('index');
+    }
+
+    public function articleAction()
     {
         $this->view('index');
     }

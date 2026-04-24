@@ -26,18 +26,18 @@ services:
       - php_network
 
   db:
-    image: postgres:16-alpine
+    image: mysql:latest
     container_name: db
     restart: unless-stopped
     env_file: .env
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     networks:
       - php_network
 networks:
   php_network:
     driver: bridge
 volumes:
-  pgdata:
+  mysql_data:

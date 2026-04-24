@@ -10,8 +10,11 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
+COPY . .
+RUN chmod +x /usr/bin/composer \
+    && cd /var/www/html \
+    && composer install
 
-# Установка прав
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
