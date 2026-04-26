@@ -8,6 +8,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - /var/www/html/vendor
     networks:
       - php_network
 
@@ -16,7 +17,7 @@ services:
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - .:/var/www/html

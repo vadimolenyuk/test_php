@@ -7,17 +7,15 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install pdo_mysql zip
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/bin/composer
 
 WORKDIR /var/www/html
-COPY . .
-RUN chmod +x /usr/bin/composer \
-    && cd /var/www/html \
-    && composer install
 
+COPY . .
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
-
+RUN composer install
 USER www-data
 
 EXPOSE 9000
