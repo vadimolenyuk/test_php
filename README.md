@@ -1,6 +1,7 @@
 # PHP to Smarty
 ## Launch instructions
 
+- create an ENV file using the example or simply rename .ENV.EXAMPLE
 - launch: 
 ~~~bash  
 docker-compose up -d
