@@ -2,36 +2,53 @@
 namespace Loader;
 use Controllers\IndexController;
 use Database\BaseSql;
+use Exception;
+
 class Loader
 {
     public readonly array $route;
-    public readonly array $params;
 
     public function __construct(array $serv)
     {   
         $url = trim(parse_url($serv['REQUEST_URI'], PHP_URL_PATH), '/');
-        $this->route = empty($url) ? ["index"] : explode('/', $url);
-        parse_str($serv['QUERY_STRING'], $params);
-        $this->params = $params ?? [];
+        $this->route = empty($url) ? [""] : explode('/', $url);
 
         $this->load();
     }
 
     private function load()
     {
-        $controller = new IndexController();
         BaseSql::connect();
-
-        if (method_exists($controller, $this->route[0] . 'Action')) {
-            $method = $this->route[0] . 'Action';
-        } else {
-            $method ='ErrorAction';
-        }
-        
-        $controller->$method($this->route[1] ?? null);
+        $this->runController();
     }
 
-    public function run() {
+    private function runController() {
+        $urls = (require __DIR__ . '/rule.php');
+        $method ='ErrorAction';
 
+        foreach ($urls as $url => $controller){
+            $urlParams = explode("/", $url);
+            $isActual = true;
+            if (count($this->route) == count($urlParams)) {
+          
+                foreach($this->route as $key => $part){
+                    if ($part === $urlParams[$key] || ( $urlParams[$key]===":id" && filter_var($part, FILTER_VALIDATE_INT)!==false)) {
+                        $method = $controller;
+                    } else {
+                        $method ='ErrorAction';
+                        $isActual = false;
+                    }
+                }
+
+                if ($isActual) {
+                    break;
+                }
+            }
+        }
+        try {
+            (new IndexController())->$method($this->route[1] ?? null);
+        } catch (\Throwable $e) {
+            echo "Error not id;";
+        }
     }
 }

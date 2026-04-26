@@ -32,11 +32,14 @@
     background-color: #e4d593;
     padding: 10px;
     margin-right: 10px;
+    margin-bottom: 10px;
     width: 20%;
     float: left;
     border-radius: 2%;
 }
-
+.article-list {
+    display: flow-root;
+}
 .view-botton {
     background-color: #70abce;
     padding: 10px;
@@ -56,4 +59,8 @@
 .article-description {
     float: left;
     width: 60%;
+}
+
+.filter{
+    width: 20%;
 }

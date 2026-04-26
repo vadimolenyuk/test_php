@@ -14,38 +14,58 @@ class Console extends BaseSql
 
     private function createCategorys()
     {
-        $sql = "INSERT INTO category (title, description) VALUES (:title, :description)";
+        $sql = "INSERT INTO category (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
         $stmt = self::$pdo->prepare($sql);
         for($i = 0; $i < self::COUNT_DATA; $i++) {
             $stmt->execute([
                 ':title' => "Category " . $i,
-                ':description' => "This is a category " . $i
+                ':description' => "This is a category " . $i,
+                ':created_at' => (new \DateTime('- 10 days'))->format('Y-m-d H:i:s'),
+                ':updated_at' => (new \DateTime('- 10 days'))->format('Y-m-d H:i:s')
             ]);
         }
     }
 
     private function createArticles()
     {
-        $sql = "INSERT INTO article (title, description, image, details) VALUES (:title, :description, :image, :details)";
+        $sql = "INSERT INTO article (title, description, image, details, published_at, created_at, updated_at) VALUES (:title, :description, :image, :details, :published_at, :created_at, :updated_at)";
         $stmt = self::$pdo->prepare($sql);
         for($i = 0; $i < self::COUNT_DATA; $i++) {
             $stmt->execute([
                 ':title' => "Article " . $i,
                 ':description' => "This is the content of article " . $i,
                 ':image' => "image" . rand(1, 10) . ".jpg",
-                ':details' => "Detailed content of article. " . $i
+                ':details' => "Detailed content of article. " . $i,
+                ':published_at' => (new \DateTime('- 10 days'))->modify('+' . rand(0, 10) . ' days')->format('Y-m-d H:i:s'),
+                ':created_at' => (new \DateTime('- 10 days'))->format('Y-m-d H:i:s'),
+                ':updated_at' => (new \DateTime('- 10 days'))->format('Y-m-d H:i:s')
             ]);
         }
     }
 
     private function createArticleCategorys()
     {
-        $sql = "INSERT INTO article_category (category_id, article_id) VALUES (:category_id, :article_id)";
-        $stmt = self::$pdo->prepare($sql);
+        $data = [];
         for($i = 0; $i < self::COUNT_DATA; $i++) {
+            $categoryId = rand(1, self::COUNT_DATA);
+            $articleId = rand(1, self::COUNT_DATA);
+            if (!in_array(['category_id' => $categoryId, 'article_id' => $articleId], $data)) {
+                 $data[] = [
+                    'category_id' => $categoryId,
+                    'article_id' => $articleId
+                ];
+            } else {
+                $i--;
+            }
+        }
+
+        $sql = "INSERT IGNORE INTO article_category (category_id, article_id) VALUES (:category_id, :article_id)";
+        $stmt = self::$pdo->prepare($sql);
+
+        foreach ($data as $item) {
             $stmt->execute([
-                ':category_id' => rand(1, self::COUNT_DATA),
-                ':article_id' => rand(1, self::COUNT_DATA)
+                ':category_id' => $item['category_id'],
+                ':article_id' => $item['article_id']
             ]);
         }
     }

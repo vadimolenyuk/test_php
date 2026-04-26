@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS article (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     image VARCHAR(255) NULL,
     counter_show INTEGER DEFAULT 0,
+    published_at TIMESTAMP NULL,
     details TEXT NULL
 );
 
