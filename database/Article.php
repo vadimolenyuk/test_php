@@ -53,4 +53,20 @@ class Article extends BaseSql
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute([':id' => $articleId]);
     }
+
+    public function getLinkArticle(int $limit = 3) 
+    {
+        $sql = "SELECT a.* FROM article a
+                JOIN article_category ac ON ac.article_id = :id 
+                JOIN article_category ac1 ON ac.category_id = ac1.category_id 
+				Where ac1.article_id =  a.id and a.id != :id 
+                ORDER BY a.published_at DESC
+                LIMIT :limit";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindValue(':id', $this->id, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Article::class);
+    }
 }
